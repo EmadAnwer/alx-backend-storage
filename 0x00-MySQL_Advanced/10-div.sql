@@ -4,13 +4,15 @@
 DELIMITER //
 
 CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS DOUBLE
+RETURNS INT
 DETERMINISTIC
+READS SQL DATA
 BEGIN
-    IF b = 0
-    THEN RETURN 0;
-    END IF;
-    RETURN a / b;
+    DECLARE result INT;
+
+    SET result = IF(b = 0, 0, a / b);
+
+    RETURN result;
 END //
 
 DELIMITER ;
