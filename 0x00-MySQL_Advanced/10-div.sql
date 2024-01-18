@@ -4,15 +4,14 @@
 DELIMITER //
 
 CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS INT
+RETURNS FLOAT
 DETERMINISTIC
-READS SQL DATA
 BEGIN
-    DECLARE result INT;
+    IF b = 0 THEN
+        RETURN 0;
+    END IF;
 
-    SET result = IF(b = 0, 0, a / b);
-
-    RETURN result;
-END //
+    RETURN a / b;
+END//
 
 DELIMITER ;
