@@ -1,8 +1,8 @@
---  stored procedure AddBonus that adds a new correction for a student.
+-- trigger that decreases the quantity of an item after adding a new order.
 
 
 DELIMITER //
-CREATE PROCEDURE AddBonus(IN user_id, IN project_name, IN score)
+CREATE PROCEDURE AddBonus(IN user_id INT, IN project_name VARCHAR(255), IN score INT)
 BEGIN
     IF (SELECT id FROM projects WHERE name = project_name) IS NULL THEN
         INSERT INTO projects (name) VALUES (project_name);
@@ -10,9 +10,7 @@ BEGIN
     ELSE
         SELECT id INTO @project_id FROM projects WHERE name = project_name;
     END IF;
-
     INSERT INTO corrections (user_id, project_id, score) VALUES (user_id, @project_id, score);
 
 END //
-
 DELIMITER ;
