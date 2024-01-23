@@ -27,6 +27,9 @@ def main():
         ]
     )
 
+    for ip in top_ips:
+        print(f"\t{ip.get('_id')}: {ip.get('count')}")
+        
 
 if __name__ == "__main__":
     main()
