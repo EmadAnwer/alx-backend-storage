@@ -4,8 +4,6 @@ from pymongo import MongoClient
 
 
 if __name__ == "__main__":
-    """provides some stats about Nginx logs stored in MongoDB"""
-
     client = MongoClient("mongodb://127.0.0.1:27017")
     nginx_c = client.logs.nginx
 
@@ -17,7 +15,5 @@ if __name__ == "__main__":
         c: int = nginx_c.count_documents({"method": m})
         print(f"\tmethod {m}: {c}")
 
-    status_check: int = nginx_c.count_documents(
-        {"method": "GET", "path": "/status"}
-        )
-    print(f"{status_check} status check")
+    st_c: int = nginx_c.count_documents({"method": "GET", "path": "/status"})
+    print(f"{st_c} status check")
