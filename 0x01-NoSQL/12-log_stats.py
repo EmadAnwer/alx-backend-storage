@@ -4,6 +4,8 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 
 if __name__ == "__main__":
+    """provides some stats about Nginx logs stored in MongoDB"""
+
     client: MongoClient = MongoClient("mongodb://127.0.0.1:27017")
     nginx_c: Collection = client.logs.nginx
 
