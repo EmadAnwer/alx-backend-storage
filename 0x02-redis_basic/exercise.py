@@ -28,8 +28,7 @@ class Cache:
     def get(self, key: str, fn: Callable):
         """get value and pass it to the callable"""
         value = self._redis.get(key)
-        if value is None:
-            return None
+
 
         if fn is not None:
             return fn(value)
