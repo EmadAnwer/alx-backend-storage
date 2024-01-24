@@ -4,19 +4,19 @@
 """
 
 import uuid
-import redis
 from typing import Union
+import redis
 
 
 class Cache:
     """Create a Cache class."""
 
-    def __init__(self) -> None:
+    def __init__(self):
         """
         store an instance of the Redis client as a private variable
         flush the instance using
         """
-        self._redis: redis.Redis = redis.Redis()
+        self._redis = redis.Redis()
         self._redis.flushdb()
 
     def store(self, data: Union[str, bytes, int, float]) -> str:
