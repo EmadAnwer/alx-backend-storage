@@ -36,10 +36,10 @@ class Cache:
 
         return value
 
-    def get_str(self, key: str) -> Union[str, None]:
+    def get_str(self, key: str):
         """parametrize method for getting a string from the cache"""
         return self.get(key, fn=lambda d: d.decode("utf-8") if d else None)
 
-    def get_int(self, key: str) -> Union[int, None]:
+    def get_int(self, key: str):
         """parametrize method for getting an integer from the cache"""
         return self.get(key, fn=lambda d: int(d) if d else None)
