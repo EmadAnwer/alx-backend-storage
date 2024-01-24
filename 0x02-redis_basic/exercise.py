@@ -25,20 +25,19 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable):
+    def get(self, key: str, fn: Callable) -> Union[str, bytes, int, float]:
         """get value and pass it to the callable"""
         value = self._redis.get(key)
-
 
         if fn is not None:
             return fn(value)
 
         return value
 
-    def get_str(self, key: str):
+    def get_str(self, key: str) -> str:
         """parametrize method for getting a string from the cache"""
-        return self.get(key, fn=lambda d: d.decode("utf-8") if d else None)
+        return self.get(key, lambda x: x.decode("utf-8"))  # type: ignore
 
-    def get_int(self, key: str):
+    def get_int(self, key: str) -> int:
         """parametrize method for getting an integer from the cache"""
-        return self.get(key, fn=lambda d: int(d) if d else None)
+        return self.get(key, int)  # type: ignore
