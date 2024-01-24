@@ -25,7 +25,9 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable) -> Union[str, bytes, int, float]:
+    def get(
+        self, key: str, fn: Union[Callable, None] = None
+    ) -> Union[str, bytes, int, float]:
         """get value and pass it to the callable"""
         value = self._redis.get(key)
 
