@@ -2,10 +2,53 @@
 """
  Cache class module
 """
-
 import uuid
-from typing import Callable, Union
+from typing import Union, Callable
+from functools import wraps
 import redis
+
+
+def count_calls(method: Callable) -> Callable:
+    """Count calls decorator"""
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """Wrapper function"""
+        key = method.__qualname__
+        self._redis.incr(key)
+        return method(self, *args, **kwargs)
+
+    return wrapper
+
+
+def call_history(method: Callable) -> Callable:
+    """Call history decorator"""
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """Wrapper function"""
+        key = method.__qualname__
+        input = str(args)
+        self._redis.rpush(f"{key}:inputs", input)
+        output = str(method(self, *args, **kwargs))
+        self._redis.rpush(f"{key}:outputs", output)
+        return output
+
+    return wrapper
+
+
+def replay(method: Callable):
+    """Replay decorator print history of calls of a particular function"""
+    r = redis.Redis()
+    key = method.__qualname__
+    count = r.get(key)
+    if not count:
+        count = 0
+    inputs = r.lrange(f"{key}:inputs", 0, -1)
+    outputs = r.lrange(f"{key}:outputs", 0, -1)
+    print(f"{key} was called {count} times:")
+    for i, o in zip(inputs, outputs):
+        print(f"{key}(*{i.decode('utf-8')}) -> {o.decode('utf-8')}")
 
 
 class Cache:
